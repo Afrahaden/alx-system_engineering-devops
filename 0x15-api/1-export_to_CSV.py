@@ -1,18 +1,27 @@
 #!/usr/bin/python3
-"""Exports to-do list info for a given employee ID to CSV format."""
-import csv
-import requests
-import sys
+"""
+place holder
+"""
+
 
 if __name__ == "__main__":
-        url = "https://jsonplaceholder.typicode.com/"
-            user_id = sys.argv[1]
-                user = requests.get(url + "users/{}".format(user_id)).json()
-                    username = user.get("username")
-                        todos = requests.get(url + "todos", params={"userId": user_id}).json()
 
-                            with open("{}.csv".format(user_id), "w", newline="") as csvfile:
-                                        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-                                                [writer.writerow(
-                                                                 [user_id, username, t.get("completed"), t.get("title")]
-                                                                             ) for t in todos]
+        import csv
+            import requests
+                from sys import argv
+
+                    if len(argv) < 2:
+                                exit()
+                                    todos = requests.get(
+                                                    "https://jsonplaceholder.typicode.com/todos?userId={}"
+                                                            .format(argv[1]))
+                                        name = requests.get(
+                                                        "https://jsonplaceholder.typicode.com/users?id={}".format(argv[1]))
+                                            name = name.json()
+                                                name = name[0]["username"]
+                                                    todos = todos.json()
+                                                        file_name = "{}.csv".format(argv[1])
+                                                            with open(file_name, 'w') as csv_file:
+                                                                        writer = csv.writer(csv_file, delimiter=',', quoting=csv.QUOTE_ALL)
+                                                                                for todo in todos:
+                                                                                                writer.writerow([argv[1], name, todo['completed'], todo['title']])
